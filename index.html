@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Formulário de Inscrição</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css">
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/intlTelInput.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+
+</head>
+<body background="fundo.jpg">
+  <h1>Bem vindo ao site HTML</h1>
+  <h2>Preencha o formúlario abaixo para particiar do curso de Programação</h2>
+
+  <form action="">
+    <fieldset>
+      <legend>Dados Pessoais</legend>
+      <table cellspacing="10">
+        <tr>
+          <td>
+            <label>Nome:</label>
+          </td>
+          <td>
+            <input type="text" name="name" >
+          </td>
+          <td>
+            <label>Sobrenome:</label>
+          </td>
+          <td>
+            <input type="text" name="sobrenome">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label>Data de Nascimento:</label>
+          </td>
+          <td>
+            <input type="date" name="nascimento">
+          </td>
+          <td>
+            <label>Qual seu gênero?</label>
+          </td>
+          <td>
+            <select name="genero" >
+              <option value="">Masculino</option>
+              <option value="">Feminino</option>
+              <option value="">Não-binárie</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label>Qual seu estado civil?</label>
+          </td>
+          <td>
+            <select>
+              <option value="">Solteiro</option>
+              <option value="">Casado</option>
+              <option value="">Divorsiado</option>
+              <option value="">Viúvo</option>
+            </select>
+          </td>
+          <td>
+            <label>Qual seu número?</label>
+          </td>
+          <td id="form">
+            <input type="number" id="phone">
+          </td>
+
+          <td>
+            <label>E-mail</label>
+          </td>
+          <td>
+            <input type="email">
+          </td>
+        </tr>
+      </table>
+    </fieldset>
+    <br>
+    
+    <fieldset>
+      <legend>Dados de Endereço</legend>
+      <table cellspacing="10">
+
+        <tr>
+          <td>
+            <label>Informe seu CEP:</label>
+          </td>
+          <td>
+            <input type="text" id="cep" placeholder="1348-000">
+          </td>
+          <td>
+            <label for="">UF</label>
+          </td>
+          <td>
+            <input type="tex" id="uf">
+          </td>
+          <td>
+            <label for="">Cidade</label>
+          </td>
+          <td>
+            <input type="text" id="cidade">
+          </td>
+          <td>
+            <label for="">Bairro</label>
+          </td>
+          <td>
+            <input type="text" id="bairro">
+          </td>
+          <td>
+            <label for="">Endereço</label>
+          </td>
+          <td>
+            <input type="text" id="endereco">
+          </td>
+        </tr>
+      </table> 
+    </body>
+    </fieldset>
+    <br>
+
+    <fieldset>
+      <legend>Dados de Login</legend>
+      <table cellspacing="10">
+        <tr>
+          <td>
+            <label>Login de Usuário</label>
+          </td>
+          <td>
+            <input type="text" name="login">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="imagem">Imagem de Perfil</label>
+          </td>
+          <td>
+            <input type="file" name="image">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="pass">Senha</label>
+          </td>
+          <td>
+            <input type="password" name="pass">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="passconfirm">confirme a senha: </label>
+          </td>
+          <td>
+            <input type="password" name="passconfirm">
+          </td>
+        </tr>
+      </table>
+    </fieldset>
+    <br>
+    <input type="submit">
+    <input type="reset" name="limpar">
+
+    <script>
+      const input = document.querySelector("#phone");
+const form = document.querySelector("#form");
+const message = document.querySelector("#message");
+
+const iti = window.intlTelInput(input, {
+  hiddenInput: "full_phone",
+  utilsScript: "/intl-tel-input/js/utils.js?1695806485509" // just for formatting/placeholders etc
+});
+
+form.onsubmit = () => {
+  if (!iti.isValidNumber()) {
+    message.innerHTML = "Invalid number. Please try again.";
+    return false;
+  }
+};
+
+const urlParams = new URLSearchParams(window.location.search);
+const fullPhone = urlParams.get('full_phone')
+if (fullPhone) {
+  message.innerHTML = `Submitted hidden input value: ${fullPhone}`;
+}
+
+/*
+			 * Para efeito de demonstração, o JavaScript foi
+			 * incorporado no arquivo HTML.
+			 * O ideal é que você faça em um arquivo ".js" separado. Para mais informações
+			 * visite o endereço https://developer.yahoo.com/performance/rules.html#external
+			 */
+			
+			// Registra o evento blur do campo "cep", ou seja, a pesquisa será feita
+			// quando o usuário sair do campo "cep"
+			$("#cep").blur(function(){
+				// Remove tudo o que não é número para fazer a pesquisa
+				var cep = this.value.replace(/[^0-9]/, "");
+				
+				// Validação do CEP; caso o CEP não possua 8 números, então cancela
+				// a consulta
+				if(cep.length != 8){
+					return false;
+				}
+				
+				// A url de pesquisa consiste no endereço do webservice + o cep que
+				// o usuário informou + o tipo de retorno desejado (entre "json",
+				// "jsonp", "xml", "piped" ou "querty")
+				var url = "https://viacep.com.br/ws/"+cep+"/json/";
+				
+				// Faz a pesquisa do CEP, tratando o retorno com try/catch para que
+				// caso ocorra algum erro (o cep pode não existir, por exemplo) a
+				// usabilidade não seja afetada, assim o usuário pode continuar//
+				// preenchendo os campos normalmente
+				$.getJSON(url, function(dadosRetorno){
+					try{
+						// Preenche os campos de acordo com o retorno da pesquisa
+						$("#endereco").val(dadosRetorno.logradouro);
+						$("#bairro").val(dadosRetorno.bairro);
+						$("#cidade").val(dadosRetorno.localidade);
+						$("#uf").val(dadosRetorno.uf);
+					}catch(ex){}
+				});
+			});
+    </script>
+</html>
